@@ -1,0 +1,151 @@
+sum.html
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Calculator</title>
+</head>
+<body>
+<h1>Calculator</h1>
+<form action="calculate">
+Number1 : <input type="text" name="value1" /><br>
+Number2 : <input type="text" name="value2" /><br>
+<input type="submit" name="sum" value="Add"/>
+</form>
+</body>
+</html>
+
+
+calculate.servelet
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class calculate
+ */
+public class calculate extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+    /**
+     * Default constructor. 
+     */
+    public calculate() {
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		 System.out.println("calculate servlet");
+	        int val1 = Integer.parseInt(request.getParameter("value1"));
+	        int val2 = Integer.parseInt(request.getParameter("value2"));
+	        int sum=val1+val2;
+	        
+	        request.setAttribute("sum_val", new Integer(sum));
+	        
+	        //ServletContext context = getServletConfig().getServletContext();
+	        ServletConfig config = getServletConfig();
+	        ServletContext context = config.getServletContext();
+	        RequestDispatcher dispatch = context.getRequestDispatcher("/dispatch");
+	        dispatch.forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+	}
+
+}
+
+
+dispatch.servelet
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class dispatch
+ */
+public class dispatch extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public dispatch() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		 System.out.println("display servlet");
+         PrintWriter out = response.getWriter();
+         Object o = request.getAttribute("sum_val");
+         Integer sum= (Integer)o;
+         out.print("The calulated value is : "+sum);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+	}
+
+}
+
+
+web.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>chid3</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>calculate</display-name>
+    <servlet-name>calculate</servlet-name>
+    <servlet-class>calculate</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>calculate</servlet-name>
+    <url-pattern>/calculate</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>dispatch</display-name>
+    <servlet-name>dispatch</servlet-name>
+    <servlet-class>dispatch</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>dispatch</servlet-name>
+    <url-pattern>/dispatch</url-pattern>
+  </servlet-mapping>
+</web-app>
+
+

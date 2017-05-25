@@ -1,0 +1,83 @@
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
+
+public class Demo {
+
+	public static void main(String[] args) {
+		// Step 1: Load the Driver
+		try {
+	try {
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+	} catch (ClassNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+    System.out.println("Driver loaded successfully");
+            
+           
+
+ // Step 2: Get the Connection
+           
+ Connection con= DriverManager.getConnection(
+	                    "jdbc:oracle:thin:@localhost:1521:xe",
+	                    
+	"system",
+	                    
+	"system");
+// Step 3: Create the Statement
+ 
+ CallableStatement cst = con.prepareCall("{call addition(?,?,?)}");
+ cst.setInt(1, 10);
+ cst.setInt(2, 20);
+ cst.registerOutParameter(3, Types.INTEGER);
+ cst.execute();
+ 
+ System.out.println("Addition: " + cst.getInt(3));
+// Statement st = con.createStatement();
+// System.out.println("Connection Established");
+ 
+// Step 4: Fire Query and get the ResultSet
+ 
+//		 String query = "select * from EMP3";
+		            
+//		ResultSet rs = st.executeQuery(query);
+		   
+		         
+		            
+		// Step 5: Fetch the data from the ResultSet and print
+		            
+//		while(rs.next())
+//		{int id = rs.getInt(1);
+		                
+//		String n = rs.getString(2);
+		               
+//		 String d = rs.getString(3);
+		                
+//		System.out.println(id + " : " + n + " : " + d);
+		           
+//}
+            
+//  rs.close();
+            
+//st.close();
+            
+con.close();
+
+}catch (SQLException e) {
+// TODO Auto-generated catch block
+e.printStackTrace();
+} 
+
+}
+}
+
+	
+OP:
+Driver loaded successfully
+Addition: 30
